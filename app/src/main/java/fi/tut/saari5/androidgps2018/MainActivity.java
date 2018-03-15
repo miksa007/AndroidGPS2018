@@ -16,7 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
     private Location mLocation;
@@ -26,10 +33,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView helloTextView;
 
     private Context context;
+
+    private GoogleMap mMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         context=this;
         helloTextView=findViewById(R.id.textView);
@@ -40,11 +53,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //tarkistetaan lupa
                 try {
+
                     kysyLupaa(context);
+                    //Huonossa paikassa hidas haku
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
-                    //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+                    //Ottaa verkon paikan, joten yleensä nopea tapa hakea joku sijainti
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
                     if(mLocation!=null) {
                         helloTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
+                    }else{
+                        helloTextView.setText("Paikkatieto ei vielä valmis... yritä uudelleen");
                     }
                 }catch (SecurityException e){
                     Log.d("lokasofta", "Virhe: Sovelluksella ei ollut oikeuksia lokaatioon");
@@ -53,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Log.d("lokasofta", "alku");
+
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         mLocationListener=new LocationListener() {
             @Override
@@ -144,6 +162,24 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
 
