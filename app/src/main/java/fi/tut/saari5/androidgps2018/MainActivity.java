@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     kysyLupaa(context);
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+                    //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
                     if(mLocation!=null) {
                         helloTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
                     }
