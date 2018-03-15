@@ -1,5 +1,5 @@
 package fi.tut.saari5.androidgps2018;
-
+//git-branch master
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -41,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 //tarkistetaan lupa
                 try {
                     kysyLupaa(context);
+                    //Huonossa paikassa hidas haku
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
-                    //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+                    //Ottaa verkon paikan, joten yleensä nopea tapa hakea joku sijainti
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
                     if(mLocation!=null) {
                         helloTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
+                    }else{
+                        helloTextView.setText("Paikkatieto ei vielä valmis... yritä uudelleen");
                     }
                 }catch (SecurityException e){
                     Log.d("lokasofta", "Virhe: Sovelluksella ei ollut oikeuksia lokaatioon");
@@ -52,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        Log.d("lokasofta", "alku");
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         mLocationListener=new LocationListener() {
             @Override
