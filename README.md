@@ -2,7 +2,9 @@
 
 Tutoriaali paikannuksen käyttöönottoon tarpeellisilla oikeuksilla. Tämä ohje rakentaa softan, jolla nappulaa painamalla saadaan gps-koordinaatit laitteen ruutuun.
 
-Paikannus tarvii oikeuden `AndroidManifest.xml` tiedostoon
+Aloita luomalla uusi projekti Empty Activity:llä, jos ei ole sopivaa projektia ennestään. Tätä Github:ssa olevaa projektia ei kannata ottaa pohjaksi, koska tässä tutoriaali on jo ratkaistu.
+
+Paikannus tarvii oikeuden `AndroidManifest.xml` tiedostoon:
 
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
