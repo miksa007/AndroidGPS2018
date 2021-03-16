@@ -14,6 +14,11 @@ Seuraavaksi muutoksia MainActivity.java tiedostooon. Aluksi esitellään pari lu
     private Location mLocation;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 98;
 
+    private TextView paikkaTextView;
+    private Button haePaikkaButton;
+
+    private Context context;
+
 edellä mainitut ovat kolme paikannukseen liittyvää ja yksi oikeuksiin liittyvä.
 Edellisiin liittyen määritellään kyseiset muuttujat:
 
@@ -150,13 +155,16 @@ Käyttöliittymä `activity_main.xml` sisältää textview ja Button -komponenti
 
 Lisäksi tehdään buttonille kuuntelija:
 
+    context=this; 
     haePaikkaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //tarkistetaan lupa
                 try {
                     kysyLupaa(context);
-                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+                    //Tässä kaksi eri tapaa paikannukseen
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
+                    //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
                     if(mLocation!=null) {
                         helloTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
                     }else{
@@ -168,6 +176,8 @@ Lisäksi tehdään buttonille kuuntelija:
             }
         });
 
-Koodissa `mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);` ottaa käyttöön paikannuksen ja määrittelee mm. miten usein paikkaa kysellään. Paikkatiedon `mLocation` saaminen kestää vähän aikaa, joten if-lause estää sovelluksen virheet. Try - catch -rakenne on kuitenkin pakollinen kun paikannuspalvelua käytetään. Mutta jos kaikki menee oikein niin sovellus kirjoittaa nappulan painalluksella GPS-koordinaatit ruutuun.
+Koodissa `mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);` ottaa käyttöön paikannuksen ja määrittelee mm. miten usein paikkaa kysellään. Paikkatiedon `mLocation` saaminen kestää vähän aikaa, joten if-lause estää sovelluksen virheet. Try - catch -rakenne on kuitenkin pakollinen kun paikannuspalvelua käytetään. Mutta jos kaikki menee oikein niin sovellus kirjoittaa nappulan painalluksella GPS-koordinaatit ruutuun. Jos paikkaa ei löydy, niin vaihtoehtoisesti voi käyttää ` mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);´
+
 
 Kommentteja?
+(Toimi 15_3_2021)
