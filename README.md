@@ -150,7 +150,7 @@ Käyttöliittymä `activity_main.xml` sisältää textview ja Button -komponenti
 
 `MainActivity.java` tiedostossa liitetään komponentit TextViev ja Button toimintaan mukaan:
 
-    helloTextView=findViewById(R.id.textView);
+    paikkaTextView=findViewById(R.id.textView);
     haePaikkaButton=findViewById(R.id.button);
 
 Lisäksi tehdään buttonille kuuntelija:
@@ -166,9 +166,9 @@ Lisäksi tehdään buttonille kuuntelija:
                     mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
                     //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
                     if(mLocation!=null) {
-                        helloTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
+                        paikkaTextView.setText(mLocation.getLatitude() + ", " + mLocation.getLongitude());
                     }else{
-                        helloTextView.setText("Paikka ei vielä saatavilla... Kokeile uudestaan");
+                        paikkaTextView.setText("Paikka ei vielä saatavilla... Kokeile uudestaan");
                     }
                 }catch (SecurityException e){
                     Log.d("lokasofta", "Virhe: Sovelluksella ei ollut oikeuksia lokaatioon");
@@ -180,4 +180,4 @@ Koodissa `mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
 
 
 Kommentteja?
-(Toimi 15_3_2021)
+(Toimi 17_3_2022 - pienillä korjauksilla)
